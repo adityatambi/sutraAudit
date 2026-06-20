@@ -16,6 +16,7 @@ Even when explicit protected characteristics (like caste or native language) are
 
 ## File Architecture
 
+- **`reproduce.py`**: A fully self-contained offline reproducibility suite that validates data generation, trains Baseline/Aligned models, prints metrics, and saves the comparison plot without requiring network access or external APIs.
 - **`generate_data.py`**: Generates a synthetic dataset of 1,000 credit applicants divided into a *baseline* group (formal income signals) and a *target* group (informal signals, e.g., high velocity of ₹10-₹50 UPI transfers, lower-tier Android device metadata, and rural pincodes) with **identical ground-truth default rates**.
 - **`audit_pipeline.py`**: The evaluation script that trains an XGBoost classifier, connects to Adaption Labs via the Python SDK, applies Blueprint constraints, computes demographic parity difference (DPD) and equal opportunity difference (EOD), and plots the comparative results.
 - **`adaption_mock.py`**: A local fallback mock of the Adaption Labs SDK to allow offline execution.
@@ -46,10 +47,16 @@ Run the data generator to create `applicants.csv`:
 ./venv/bin/python3 generate_data.py
 ```
 
-### 4. Execute the Audit Pipeline
-Run the audit script to upload the dataset, submit the Blueprint job, train the XGBoost models, and save the charts:
+### 4. Execute the Audit Pipeline (Live SDK Run)
+Run the audit script to upload the dataset, submit the Blueprint job to Adaption Labs using your API key, train the XGBoost models, and save the charts:
 ```bash
 ./venv/bin/python3 audit_pipeline.py
+```
+
+### 5. Execute the Reproducibility Suite (Offline Simulation)
+To instantly reproduce the mathematical results, metrics table, and graphs without remote API latency or authentication:
+```bash
+./venv/bin/python3 reproduce.py
 ```
 
 ---
